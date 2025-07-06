@@ -1,0 +1,6 @@
+@WcfRestBridge.Api_HostAddress = http://localhost:5194
+
+GET {{WcfRestBridge.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
