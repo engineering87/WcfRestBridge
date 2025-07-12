@@ -4,10 +4,24 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageProjectUrl>https://github.com/engineering87/WcfRestBridge</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>WcfRestBridge is a lightweight library and REST bridge that automatically exposes WCF services as RESTful HTTP endpoints, allowing SOAP methods to be invoked using simple JSON-based REST calls</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WcfRestBridge.Attribute\WcfRestBridge.WcfAttribute.csproj" />
   </ItemGroup>
 
 </Project>

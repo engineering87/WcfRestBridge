@@ -7,27 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfRestBridge.Core", "WcfRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfRestBridge.Api", "..\WcfRestBridge.Api\WcfRestBridge.Api.csproj", "{652114FE-FAF7-4A02-AD4D-8AFF35FE7281}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WcfRestBridge.TestHost", "..\WcfRestBridge.TestHost\", "{AA5860FF-D58E-D830-FBBE-4AFC6D8E2360}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.7.2"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_54032"
-		Debug.AspNetCompiler.PhysicalPath = "..\WcfRestBridge.TestHost\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54032\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_54032"
-		Release.AspNetCompiler.PhysicalPath = "..\WcfRestBridge.TestHost\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54032\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "54032"
-		SlnRelativePath = "..\WcfRestBridge.TestHost\"
-		DefaultWebSiteLanguage = "Visual C#"
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfRestBridge.TestHost", "..\WcfRestBridge.TestHost\WcfRestBridge.TestHost.csproj", "{779684B1-A7BC-47D4-A22B-B50DF8FC339B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfRestBridge.WcfAttribute", "..\WcfRestBridge.Attribute\WcfRestBridge.WcfAttribute.csproj", "{5D7E6B3E-64FC-488D-AE1D-CD91BD7B2A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +25,14 @@ Global
 		{652114FE-FAF7-4A02-AD4D-8AFF35FE7281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{652114FE-FAF7-4A02-AD4D-8AFF35FE7281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{652114FE-FAF7-4A02-AD4D-8AFF35FE7281}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA5860FF-D58E-D830-FBBE-4AFC6D8E2360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA5860FF-D58E-D830-FBBE-4AFC6D8E2360}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA5860FF-D58E-D830-FBBE-4AFC6D8E2360}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA5860FF-D58E-D830-FBBE-4AFC6D8E2360}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{779684B1-A7BC-47D4-A22B-B50DF8FC339B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{779684B1-A7BC-47D4-A22B-B50DF8FC339B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{779684B1-A7BC-47D4-A22B-B50DF8FC339B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{779684B1-A7BC-47D4-A22B-B50DF8FC339B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D7E6B3E-64FC-488D-AE1D-CD91BD7B2A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D7E6B3E-64FC-488D-AE1D-CD91BD7B2A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D7E6B3E-64FC-488D-AE1D-CD91BD7B2A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D7E6B3E-64FC-488D-AE1D-CD91BD7B2A54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

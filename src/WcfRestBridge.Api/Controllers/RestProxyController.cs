@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// (c) 2025 Francesco Del Re <francesco.delre.87@gmail.com>
+// This code is licensed under MIT license (see LICENSE.txt for details)
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WcfRestBridge.Core;
 
@@ -18,8 +20,11 @@ namespace WcfRestBridge.Api.Controllers
         }
 
         [HttpPost("{service}/{method}")]
-        public async Task<IActionResult> Invoke(string service, string method)
+        public async Task<IActionResult> Invoke(string service, string method, [FromBody] JsonElement body)
         {
+            if (body.ValueKind == JsonValueKind.Undefined || body.ValueKind == JsonValueKind.Null)
+                return BadRequest("Request body is empty or invalid JSON.");
+
             var serviceDesc = _services.FirstOrDefault(s =>
                 s.InterfaceType.Name.Equals(service, StringComparison.OrdinalIgnoreCase));
             if (serviceDesc == null)
@@ -33,15 +38,10 @@ namespace WcfRestBridge.Api.Controllers
 
             try
             {
-                using var reader = new StreamReader(Request.Body);
-                var json = await reader.ReadToEndAsync();
-                using var doc = JsonDocument.Parse(json);
-                var root = doc.RootElement;
-
                 for (int i = 0; i < parameters.Length; i++)
                 {
                     var param = parameters[i];
-                    if (root.TryGetProperty(param.Name!, out var prop))
+                    if (body.TryGetProperty(param.Name!, out var prop))
                     {
                         var obj = JsonSerializer.Deserialize(prop.GetRawText(), param.ParameterType, new JsonSerializerOptions
                         {
