@@ -3,6 +3,8 @@
 > A lightweight runtime bridge that exposes legacy WCF services as modern RESTful endpoints via .NET.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![stars - wcfrestbridge](https://img.shields.io/github/stars/engineering87/WcfRestBridge?style=social)](https://github.com/engineering87/WcfRestBridge)
+[![issues - wcfrestbridge](https://img.shields.io/github/issues/engineering87/WcfRestBridge)](https://github.com/engineering87/WcfRestBridge/issues)
 
 ## Overview
 
