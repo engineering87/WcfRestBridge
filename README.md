@@ -5,11 +5,12 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 [![stars - wcfrestbridge](https://img.shields.io/github/stars/engineering87/WcfRestBridge?style=social)](https://github.com/engineering87/WcfRestBridge)
 [![issues - wcfrestbridge](https://img.shields.io/github/issues/engineering87/WcfRestBridge)](https://github.com/engineering87/WcfRestBridge/issues)
+[![Language - C#](https://img.shields.io/static/v1?label=Language&message=C%23&color=blueviolet)](https://dotnet.microsoft.com/it-it/languages/csharp)
 
 ## Overview
 
-**WcfRestBridge** is a runtime adapter that allows you to invoke legacy WCF (SOAP) services through a modern RESTful API using .NET. This solution is particularly useful in migration scenarios or when maintaining interoperability between existing WCF-based backends and new frontend or client applications built with REST.
-
+**WcfRestBridge** is a runtime adapter that allows you to invoke legacy WCF (SOAP) services through a modern RESTful API using .NET. 
+This solution is particularly useful in migration scenarios or when maintaining interoperability between existing WCF-based backends and new frontend or client applications built with REST.
 The bridge dynamically scans WCF service interfaces annotated with a custom attribute, exposes them via REST, and forwards requests to the corresponding SOAP endpoints at runtime.
 
 ## Features
@@ -21,7 +22,6 @@ The bridge dynamically scans WCF service interfaces annotated with a custom attr
 - ⚙️ **Configurable endpoints** via `appsettings.json`
 - ✅ Compatible with **.NET Standard**, **.NET Core**, and **.NET Framework (via service references)**
 
----
 
 ## Architecture
 
@@ -87,8 +87,8 @@ If you'd like to contribute, please fork, fix, commit and send a pull request fo
  * [Fork the repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
  * [Open an issue](https://github.com/engineering87/WcfRestBridge/issues) if you encounter a bug or have a suggestion for improvements/features
 
-### Licensee
+## License
 WcfRestBridge source code is available under MIT License, see license in the source.
 
-### Contact
+## Contact
 Please contact at francesco.delre[at]protonmail.com for any details.
