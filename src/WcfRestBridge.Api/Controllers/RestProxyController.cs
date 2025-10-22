@@ -2,6 +2,7 @@
 // This code is licensed under MIT license (see LICENSE.txt for details)
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using System.Reflection;
 using WcfRestBridge.Core;
 
 namespace WcfRestBridge.Api.Controllers
@@ -22,49 +23,54 @@ namespace WcfRestBridge.Api.Controllers
         [HttpPost("{service}/{method}")]
         public async Task<IActionResult> Invoke(string service, string method, [FromBody] JsonElement body)
         {
-            if (body.ValueKind == JsonValueKind.Undefined || body.ValueKind == JsonValueKind.Null)
+            if (body.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null)
                 return BadRequest("Request body is empty or invalid JSON.");
 
             var serviceDesc = _services.FirstOrDefault(s =>
                 s.InterfaceType.Name.Equals(service, StringComparison.OrdinalIgnoreCase));
-            if (serviceDesc == null)
-                return NotFound($"Service '{service}' not found");
+            if (serviceDesc is null)
+                return NotFound($"Service '{service}' not found.");
 
-            if (!serviceDesc.Methods.TryGetValue(method, out var methodInfo))
-                return NotFound($"Method '{method}' not found on service '{service}'");
-
-            var parameters = methodInfo.GetParameters();
-            var argsArray = new object?[parameters.Length];
+            if (!serviceDesc.Methods.TryGetValue(method, out var candidateMethods) || candidateMethods.Length == 0)
+                return NotFound($"Method '{method}' not found on service '{service}'.");
 
             try
             {
-                for (int i = 0; i < parameters.Length; i++)
+                // Pick the best overload based on JSON binding score
+                MethodInfo? selected = null;
+                object?[]? selectedArgs = null;
+                int bestScore = -1;
+
+                foreach (var mi in candidateMethods)
                 {
-                    var param = parameters[i];
-                    if (body.TryGetProperty(param.Name!, out var prop))
+                    if (TryBindArguments(mi, body, out var args, out var score) && score > bestScore)
                     {
-                        var obj = JsonSerializer.Deserialize(prop.GetRawText(), param.ParameterType, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true
-                        });
-                        argsArray[i] = obj;
-                    }
-                    else
-                    {
-                        argsArray[i] = GetDefault(param.ParameterType);
+                        bestScore = score;
+                        selected = mi;
+                        selectedArgs = args;
                     }
                 }
 
-                var endpointUrl = _config[$"WcfEndpoints:{service}"];
-                if (string.IsNullOrEmpty(endpointUrl))
-                    return StatusCode(500, $"WCF endpoint for '{service}' not configured");
+                if (selected is null || selectedArgs is null)
+                    return BadRequest($"Cannot bind request JSON to any overload of '{method}' on '{service}'.");
 
-                var result = await SoapInvoker.InvokeAsync(serviceDesc.InterfaceType, method, argsArray!, endpointUrl);
+                var endpointUrl = _config[$"WcfEndpoints:{service}"];
+                if (string.IsNullOrWhiteSpace(endpointUrl))
+                    return StatusCode(500, $"WCF endpoint for '{service}' not configured.");
+
+                var result = await SoapInvoker.InvokeAsync(
+                    contractType: serviceDesc.InterfaceType,
+                    methodName: selected.Name,
+                    args: selectedArgs,
+                    endpointUrl: endpointUrl,
+                    parameterTypes: selected.GetParameters().Select(p => p.ParameterType).ToArray()
+                );
+
                 return Ok(result);
             }
-            catch (JsonException jsonEx)
+            catch (JsonException ex)
             {
-                return BadRequest($"JSON parsing error: {jsonEx.Message}");
+                return BadRequest($"JSON parsing error: {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -73,5 +79,56 @@ namespace WcfRestBridge.Api.Controllers
         }
 
         private static object? GetDefault(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
+
+        private static bool TryBindArguments(MethodInfo methodInfo, JsonElement body, out object?[] args, out int score)
+        {
+            var parameters = methodInfo.GetParameters();
+            args = new object?[parameters.Length];
+            score = 0;
+
+            if (body.ValueKind != JsonValueKind.Object)
+                return false;
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                var p = parameters[i];
+                if (TryGetPropertyCaseInsensitive(body, p.Name!, out var prop))
+                {
+                    try
+                    {
+                        args[i] = JsonSerializer.Deserialize(prop.GetRawText(), p.ParameterType, options);
+                        score++; // explicit match
+                    }
+                    catch
+                    {
+                        args = Array.Empty<object?>();
+                        score = -1;
+                        return false;
+                    }
+                }
+                else
+                {
+                    args[i] = GetDefault(p.ParameterType);
+                }
+            }
+
+            return true;
+        }
+
+        private static bool TryGetPropertyCaseInsensitive(JsonElement obj, string name, out JsonElement value)
+        {
+            foreach (var prop in obj.EnumerateObject())
+            {
+                if (prop.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = prop.Value;
+                    return true;
+                }
+            }
+            value = default;
+            return false;
+        }
     }
 }

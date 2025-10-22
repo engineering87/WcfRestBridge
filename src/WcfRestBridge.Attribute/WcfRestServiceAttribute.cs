@@ -8,8 +8,8 @@ namespace WcfRestBridge.WcfAttribute
     /// Custom attribute used to mark WCF service interfaces intended to be exposed as REST endpoints.
     /// Specifies a route prefix that maps the interface to a RESTful route.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class WcfRestServiceAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
+    public sealed class WcfRestServiceAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets the route prefix used to expose the interface via REST.

@@ -7,6 +7,8 @@
     <PackageProjectUrl>https://github.com/engineering87/WcfRestBridge</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>WcfRestBridge is a lightweight library and REST bridge that automatically exposes WCF services as RESTful HTTP endpoints, allowing SOAP methods to be invoked using simple JSON-based REST calls</Description>
+    <RepositoryUrl>https://github.com/engineering87/WcfRestBridge</RepositoryUrl>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

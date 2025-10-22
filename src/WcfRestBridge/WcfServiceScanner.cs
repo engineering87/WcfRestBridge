@@ -24,7 +24,9 @@ namespace WcfRestBridge.Core
                 {
                     InterfaceType = t,
                     RoutePrefix = t.GetCustomAttribute<WcfRestServiceAttribute>()!.RoutePrefix,
-                    Methods = t.GetMethods().ToDictionary(m => m.Name, m => m)
+                    Methods = t.GetMethods()
+                                .GroupBy(m => m.Name, StringComparer.OrdinalIgnoreCase)
+                                .ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.OrdinalIgnoreCase)
                 })];
         }
     }

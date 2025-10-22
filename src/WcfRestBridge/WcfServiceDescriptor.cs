@@ -13,16 +13,17 @@ namespace WcfRestBridge.Core
         /// <summary>
         /// The interface type of the WCF service.
         /// </summary>
-        public Type InterfaceType { get; set; }
+        public Type InterfaceType { get; init; }
 
         /// <summary>
         /// The route prefix used to map REST endpoints to this service.
         /// </summary>
-        public string RoutePrefix { get; set; }
+        public string RoutePrefix { get; init; }
 
         /// <summary>
         /// Dictionary of method names to MethodInfo objects for the service interface.
         /// </summary>
-        public Dictionary<string, MethodInfo> Methods { get; set; } = new();
+        public IReadOnlyDictionary<string, MethodInfo[]> Methods { get; init; }
+            = new Dictionary<string, MethodInfo[]>(StringComparer.OrdinalIgnoreCase);
     }
 }
